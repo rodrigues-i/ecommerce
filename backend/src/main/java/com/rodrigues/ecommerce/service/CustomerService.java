@@ -14,18 +14,18 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	public List<Customer> getAllCustomers() {
 		List<Customer> customers = customerRepository.findAll();
 		return customers;
 	}
-	
+
 	public Customer getCustomerById(Long customerId) {
 		Optional<Customer> obj = customerRepository.findById(customerId);
-		if(obj.isEmpty()) {
+		if (obj.isEmpty()) {
 			return null;
 		}
-		
+
 		Customer customer = obj.get();
 		return customer;
 	}
@@ -33,5 +33,31 @@ public class CustomerService {
 	public Long createCustomer(Customer customer) {
 		Customer savedCustomer = customerRepository.save(customer);
 		return savedCustomer.getCustomerId();
+	}
+
+	public Customer updateCustomer(Long customerId, Customer customer) {
+		Optional<Customer> obj = customerRepository.findById(customerId);
+		if (customerId != customer.getCustomerId() || obj.isEmpty())
+			return null;
+
+		Customer databaseCustomer = obj.get();
+		if (!customer.getFirstName().trim().equals("")) {
+			databaseCustomer.setFirstName(customer.getFirstName());
+		}
+
+		if (!customer.getFamilyName().trim().equals("")) {
+			databaseCustomer.setFamilyName(customer.getFamilyName());
+		}
+
+		if (!customer.getEmail().trim().equals("")) {
+			databaseCustomer.setEmail(customer.getEmail());
+		}
+
+		if (!customer.getPassword().trim().equals("")) {
+			databaseCustomer.setPassword(customer.getPassword());
+		}
+
+		databaseCustomer = customerRepository.save(databaseCustomer);
+		return databaseCustomer;
 	}
 }
