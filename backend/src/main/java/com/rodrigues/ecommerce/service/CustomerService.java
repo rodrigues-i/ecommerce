@@ -1,5 +1,7 @@
 package com.rodrigues.ecommerce.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,11 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	public List<Customer> getAllCustomers() {
+		List<Customer> customers = customerRepository.findAll();
+		return customers;
+	}
 
 	public Long createCustomer(Customer customer) {
 		Customer savedCustomer = customerRepository.save(customer);
