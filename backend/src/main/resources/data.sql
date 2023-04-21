@@ -1,0 +1,14 @@
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Pedro', 'Oliveira', 'pedro@email.com', 'minhasenha');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Maria', 'Santos', 'maria@email.com', 'senhamaria');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('João', 'Silva', 'joao@email.com', 'senhajoao');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Ana', 'Ferreira', 'ana@email.com', 'senhaana');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Ricardo', 'Almeida', 'ricardo@email.com', 'senharicardo');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Mariana', 'Rodrigues', 'mariana@email.com', 'senhamariana');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Lucas', 'Pereira', 'lucas@email.com', 'senhalucas');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Carla', 'Lima', 'carla@email.com', 'senhacarla');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Gustavo', 'Rocha', 'gustavo@email.com', 'senhagustavo');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Juliana', 'Costa', 'juliana@email.com', 'senhajuliana');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Fernando', 'Gomes', 'fernando@email.com', 'senhafernando');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Amanda', 'Sousa', 'amanda@email.com', 'senhaamanda');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Henrique', 'Nunes', 'henrique@email.com', 'senhahenrique');
+INSERT INTO customer (first_name, family_name, email, password) VALUES ('Patricia', 'Vieira', 'patricia@email.com', 'senhapatricia');
