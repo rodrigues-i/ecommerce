@@ -1,4 +1,4 @@
-package com.rodrigues.ecommerce.customer;
+package com.rodrigues.ecommerce.controller;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,15 @@ public class CustomerController {
 	public ResponseEntity<List<Customer>> getAllCustomers() {
 		List<Customer> customers = customerService.getAllCustomers();
 		return ResponseEntity.ok().body(customers);
+	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<Customer> getCustomerById(@PathVariable("id") Long customerId) {
+		Customer customer = customerService.getCustomerById(customerId);
+		if (customer == null)
+			return ResponseEntity.notFound().build();
+
+		return ResponseEntity.ok().body(customer);
 	}
 
 	@PostMapping
