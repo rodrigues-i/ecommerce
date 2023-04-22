@@ -47,7 +47,7 @@ public class CustomerController {
 			@RequestBody Customer customer) {
 		Customer updatedCustomer = customerService.updateCustomer(customerId, customer);
 		if (updatedCustomer == null)
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.badRequest().build();
 
 		return ResponseEntity.ok().body(updatedCustomer);
 	}

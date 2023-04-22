@@ -32,11 +32,12 @@ public class CustomerService {
 	}
 
 	public Customer updateCustomer(Long customerId, Customer customer) {
-		Optional<Customer> obj = customerRepository.findById(customerId);
-		if (customerId != customer.getCustomerId() || obj.isEmpty())
+		if (customerId != customer.getCustomerId())
 			return null;
+		
+		Optional<Customer> obj = customerRepository.findById(customerId);
 
-		Customer databaseCustomer = obj.get();
+		Customer databaseCustomer = obj.orElseThrow(() -> new ResourceNotFoundException("Customer not found for id " + customerId));
 		if (!customer.getFirstName().trim().equals("")) {
 			databaseCustomer.setFirstName(customer.getFirstName());
 		}
