@@ -3,17 +3,18 @@ package com.rodrigues.ecommerce.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rodrigues.ecommerce.entity.Customer;
 import com.rodrigues.ecommerce.repository.CustomerRepository;
 import com.rodrigues.ecommerce.service.exceptions.ResourceNotFoundException;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class CustomerService {
 
-	@Autowired
 	private CustomerRepository customerRepository;
 
 	public List<Customer> getAllCustomers() {
