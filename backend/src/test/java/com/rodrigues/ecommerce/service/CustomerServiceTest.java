@@ -23,10 +23,17 @@ public class CustomerServiceTest {
 	@Mock
 	private CustomerRepository customerRepository;
 	private CustomerService underTest;
+	
+	Long customerId;
+	Customer customer;
+	Optional<Customer> optionalCustomer;
 
 	@BeforeEach
 	void setUp() {
 		underTest = new CustomerService(customerRepository);
+		customerId = 1L;
+		customer = new Customer(customerId, "Pedro", "Pereira", "pedro@email.com", "senha");
+		optionalCustomer = Optional.of(customer);
 	}
 
 	@Test
@@ -40,13 +47,9 @@ public class CustomerServiceTest {
 	
 	@Test
 	void canGetCustomerById() {
-		// given
-		Long customerId = 1L;
-		Customer customer = new Customer(customerId, "Pedro", "Pereira", "pedro@email.com", "senha");
-		Optional<Customer> obj = Optional.of(customer);
-		
+		// given		
 		given(customerRepository.findById(customerId))
-			.willReturn(obj);
+			.willReturn(optionalCustomer);
 		
 		// when
 		underTest.getCustomerById(customerId);
