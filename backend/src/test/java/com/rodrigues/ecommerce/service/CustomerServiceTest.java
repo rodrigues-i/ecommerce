@@ -139,6 +139,34 @@ public class CustomerServiceTest {
 		verify(customerRepository, never()).save(any());
 	}
 	
+	@Test
+	void canDeleteCustomer() {
+		// given
+		given(customerRepository.findById(customerId))
+			.willReturn(optionalCustomer);
+		
+		// when
+		underTest.deleteCustomer(customerId);
+		
+		// then
+		verify(customerRepository).findById(customerId);
+		verify(customerRepository).deleteById(customerId);
+	}
 	
+	@Test
+	void deleteCustomerShouldThrowResourceNotFoundExceptionWhenCustomerDoesNotExist() {
+		// given
+		given(customerRepository.findById(customerId))
+			.willReturn(Optional.empty());
+		
+		// when		
+		// then
+		assertThatThrownBy(() -> underTest.deleteCustomer(customerId))
+			.isInstanceOf(ResourceNotFoundException.class)
+			.hasMessageContaining("Customer not found for id " + customerId);
+		
+		verify(customerRepository).findById(customerId);
+		verify(customerRepository, never()).deleteById(customerId);
+	}
 
 }
