@@ -60,4 +60,12 @@ public class CustomerService {
 		databaseCustomer = customerRepository.save(databaseCustomer);
 		return databaseCustomer;
 	}
+
+	public void deleteCustomer(Long customerId) {
+		Optional<Customer> obj = customerRepository.findById(customerId);
+		if (obj.isEmpty())
+			return;
+
+		customerRepository.deleteById(customerId);
+	}
 }
