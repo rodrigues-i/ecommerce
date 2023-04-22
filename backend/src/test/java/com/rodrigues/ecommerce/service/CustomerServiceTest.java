@@ -1,12 +1,12 @@
 package com.rodrigues.ecommerce.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
 
@@ -87,6 +87,56 @@ public class CustomerServiceTest {
 		// then
 		verify(customerRepository).save(customer);
 		assertThat(customerId).isEqualTo(this.customerId);
+	}
+	
+	@Test
+	void canUpdateCustomer() {
+		// given
+		String newEmail = "pedro.pereita@gmail.com";
+		given(customerRepository.findById(customerId))
+			.willReturn(optionalCustomer);
+		
+		given(customerRepository.save(any()))
+			.willReturn(customer);
+		
+		// when
+		customer.setEmail(newEmail);
+		Customer updatedCustomer = underTest.updateCustomer(customerId, customer);
+		
+		// then
+		verify(customerRepository).findById(customerId);
+		verify(customerRepository).save(customer);
+		
+		assertThat(updatedCustomer.getEmail()).isEqualTo(newEmail);
+	}
+	
+	@Test
+	void updateCustomershouldReturnNullWhenIdIsDifferent() {
+		// given
+		Long differentId = 3L;
+		
+		// when
+		Customer customer = underTest.updateCustomer(differentId, this.customer);
+		assertThat(customer).isNull();
+		
+		verify(customerRepository, never()).findById(differentId);
+		verify(customerRepository, never()).save(this.customer);
+	}
+	
+	@Test
+	void updateCustomerShouldThrowResourceNotFoundExceptionWhenCustomerDoesNotExist() {
+		// given
+		given(customerRepository.findById(customerId))
+			.willReturn(Optional.empty());
+		
+		// when
+		// then
+		assertThatThrownBy(() -> underTest.updateCustomer(customerId, customer))
+			.isInstanceOf(ResourceNotFoundException.class)
+			.hasMessageContaining("Customer not found for id " + customerId);
+		
+		verify(customerRepository).findById(customerId);
+		verify(customerRepository, never()).save(any());
 	}
 	
 	
