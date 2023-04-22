@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.rodrigues.ecommerce.entity.Customer;
 import com.rodrigues.ecommerce.repository.CustomerRepository;
+import com.rodrigues.ecommerce.service.exceptions.ResourceNotFoundException;
 
 @Service
 public class CustomerService {
@@ -22,12 +23,7 @@ public class CustomerService {
 
 	public Customer getCustomerById(Long customerId) {
 		Optional<Customer> obj = customerRepository.findById(customerId);
-		if (obj.isEmpty()) {
-			return null;
-		}
-
-		Customer customer = obj.get();
-		return customer;
+		return obj.orElseThrow(() -> new ResourceNotFoundException("Customer not found for id " + customerId));
 	}
 
 	public Long createCustomer(Customer customer) {
