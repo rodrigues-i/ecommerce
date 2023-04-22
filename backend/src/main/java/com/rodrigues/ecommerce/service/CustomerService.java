@@ -34,10 +34,11 @@ public class CustomerService {
 	public Customer updateCustomer(Long customerId, Customer customer) {
 		if (customerId != customer.getCustomerId())
 			return null;
-		
+
 		Optional<Customer> obj = customerRepository.findById(customerId);
 
-		Customer databaseCustomer = obj.orElseThrow(() -> new ResourceNotFoundException("Customer not found for id " + customerId));
+		Customer databaseCustomer = obj
+				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for id " + customerId));
 		if (!customer.getFirstName().trim().equals("")) {
 			databaseCustomer.setFirstName(customer.getFirstName());
 		}
@@ -61,7 +62,7 @@ public class CustomerService {
 	public void deleteCustomer(Long customerId) {
 		Optional<Customer> obj = customerRepository.findById(customerId);
 		if (obj.isEmpty())
-			return;
+			throw new ResourceNotFoundException("Customer not found for id " + customerId);
 
 		customerRepository.deleteById(customerId);
 	}
