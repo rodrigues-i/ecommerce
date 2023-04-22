@@ -1,6 +1,9 @@
 package com.rodrigues.ecommerce.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.BDDMockito.given;
@@ -71,5 +74,21 @@ public class CustomerServiceTest {
 			.isInstanceOf(ResourceNotFoundException.class)
 			.hasMessageContaining("Customer not found for id " + customerId);
 	}
+	
+	@Test
+	void canCreateCustomer() {
+		// given
+		given(customerRepository.save(any()))
+			.willReturn(customer);
+		
+		// when
+		Long customerId = underTest.createCustomer(customer);
+		
+		// then
+		verify(customerRepository).save(customer);
+		assertThat(customerId).isEqualTo(this.customerId);
+	}
+	
+	
 
 }
