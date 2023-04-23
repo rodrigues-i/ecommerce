@@ -3,6 +3,7 @@ package com.rodrigues.ecommerce.controlller;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rodrigues.ecommerce.controller.CustomerController;
 import com.rodrigues.ecommerce.entity.Customer;
 import com.rodrigues.ecommerce.service.CustomerService;
@@ -30,10 +32,13 @@ public class CustomerControllerTest {
 	private MockMvc mockMvc;
 	@MockBean
 	private CustomerService customerService;
+	private Customer customer;
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@BeforeEach
 	void setUp() {
-
+		customer = new Customer(1L, "John", "Doe", "johndoe@example.com", "pass");
 	}
 
 	@Test
@@ -59,7 +64,6 @@ public class CustomerControllerTest {
 
 	@Test
 	void getCustomerByIdShouldReturnCustomer() throws Exception {
-		Customer customer = new Customer(1L, "John", "Doe", "johndoe@example.com", "pass");
 		when(customerService.getCustomerById(1L)).thenReturn(customer);
 
 		mockMvc.perform(get("/customers/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
@@ -80,5 +84,19 @@ public class CustomerControllerTest {
 		mockMvc.perform(get("/customers/{id}", customerId)).andExpect(status().isNotFound());
 
 		verify(customerService).getCustomerById(customerId);
+	}
+	
+	@Test
+	void createCustomerShouldReturnId() throws Exception {
+		when(customerService.createCustomer(customer)).thenReturn(customer.getCustomerId());
+		String jsonBody = objectMapper.writeValueAsString(customer);
+		
+		mockMvc.perform(post("/customers")
+				.content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isCreated())
+		.andExpect(content().string(String.valueOf(customer.getCustomerId())));
+			
 	}
 }
