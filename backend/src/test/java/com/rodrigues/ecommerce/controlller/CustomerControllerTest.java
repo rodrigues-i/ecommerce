@@ -1,7 +1,10 @@
 package com.rodrigues.ecommerce.controlller;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -129,5 +132,23 @@ public class CustomerControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void deleteCustomerShouldRemoveCustomer() throws Exception {
+		doNothing().when(customerService).deleteCustomer(customer.getCustomerId());
+		
+		mockMvc.perform(delete("/customers/{id}", customer.getCustomerId())
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isNoContent());
+	}
+	
+	@Test
+	void deleteCustomerShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() throws Exception {
+		Long unExistingId = 3L;
+		doThrow(ResourceNotFoundException.class).when(customerService).deleteCustomer(unExistingId);
+		
+		mockMvc.perform(delete("/customers/{id}", unExistingId))
+		.andExpect(status().isNotFound());
 	}
 }
