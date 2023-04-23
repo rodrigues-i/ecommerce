@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -98,5 +99,35 @@ public class CustomerControllerTest {
 		.andExpect(status().isCreated())
 		.andExpect(content().string(String.valueOf(customer.getCustomerId())));
 			
+	}
+	
+	@Test
+	void updateCustomerShouldUpdateTheCustomer() throws Exception {
+		String newName = "Novo";
+		customer.setFirstName(newName);
+		String jsonBody = objectMapper.writeValueAsString(customer);
+		when(customerService.updateCustomer(customer.getCustomerId(), customer)).thenReturn(customer);
+		
+		mockMvc.perform(put("/customers/{id}", customer.getCustomerId())
+				.content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.customerId").exists())
+			.andExpect(jsonPath("$.firstName").value(newName))
+			.andExpect(jsonPath("$.familyName").exists());
+	}
+	
+	@Test
+	void updateCustomerShouldReturnBadRequestWhenIdFromCustomerIsDifferentFromIdOfUri() throws Exception {
+		Long differentId = 5L;
+		String jsonBody = objectMapper.writeValueAsString(customer);
+		when(customerService.updateCustomer(differentId, customer)).thenReturn(null);
+		
+		mockMvc.perform(put("/customers/{id}", differentId)
+				.content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isBadRequest());
 	}
 }
