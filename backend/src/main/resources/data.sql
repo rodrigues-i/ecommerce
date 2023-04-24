@@ -12,3 +12,18 @@ INSERT INTO customer (first_name, family_name, email, password) VALUES ('Fernand
 INSERT INTO customer (first_name, family_name, email, password) VALUES ('Amanda', 'Sousa', 'amanda@email.com', 'senhaamanda');
 INSERT INTO customer (first_name, family_name, email, password) VALUES ('Henrique', 'Nunes', 'henrique@email.com', 'senhahenrique');
 INSERT INTO customer (first_name, family_name, email, password) VALUES ('Patricia', 'Vieira', 'patricia@email.com', 'senhapatricia');
+
+
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('John', 'Smith', 'john@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Sarah', 'Johnson', 'sarah@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('David', 'Lee', 'david@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Emma', 'Davis', 'emma@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('James', 'Wilson', 'james@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Olivia', 'Martinez', 'olivia@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Ethan', 'Garcia', 'ethan@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Isabella', 'Taylor', 'isabella@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Mason', 'Jones', 'mason@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Sophia', 'Brown', 'sophia@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Noah', 'Davis', 'noah@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Ava', 'Miller', 'ava@example.com', 'mypassword');
+INSERT INTO seller (first_name, family_name, email, password) VALUES ('Liam', 'Wilson', 'liam@example.com', 'mypassword');
