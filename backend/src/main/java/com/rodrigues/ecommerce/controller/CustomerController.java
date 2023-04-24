@@ -2,6 +2,8 @@ package com.rodrigues.ecommerce.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,14 +39,14 @@ public class CustomerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Long> createCustomer(@RequestBody Customer customer) {
+	public ResponseEntity<Long> createCustomer(@Valid @RequestBody Customer customer) {
 		Long id = customerService.createCustomer(customer);
 		return ResponseEntity.status(HttpStatus.CREATED).body(id);
 	}
 
 	@PutMapping("{id}")
 	public ResponseEntity<Customer> updateCustomer(@PathVariable("id") Long customerId,
-			@RequestBody Customer customer) {
+			@Valid @RequestBody Customer customer) {
 		Customer updatedCustomer = customerService.updateCustomer(customerId, customer);
 		if (updatedCustomer == null)
 			return ResponseEntity.badRequest().build();

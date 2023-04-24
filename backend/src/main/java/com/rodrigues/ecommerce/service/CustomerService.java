@@ -41,19 +41,19 @@ public class CustomerService {
 		Customer databaseCustomer = obj
 				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for id " + customerId));
 		if (!customer.getFirstName().trim().equals("")) {
-			databaseCustomer.setFirstName(customer.getFirstName());
+			databaseCustomer.setFirstName(customer.getFirstName().trim());
 		}
 
 		if (!customer.getFamilyName().trim().equals("")) {
-			databaseCustomer.setFamilyName(customer.getFamilyName());
+			databaseCustomer.setFamilyName(customer.getFamilyName().trim());
 		}
 
 		if (!customer.getEmail().trim().equals("")) {
-			databaseCustomer.setEmail(customer.getEmail());
+			databaseCustomer.setEmail(customer.getEmail().trim());
 		}
 
 		if (!customer.getPassword().trim().equals("")) {
-			databaseCustomer.setPassword(customer.getPassword());
+			databaseCustomer.setPassword(customer.getPassword().trim());
 		}
 
 		databaseCustomer = customerRepository.save(databaseCustomer);

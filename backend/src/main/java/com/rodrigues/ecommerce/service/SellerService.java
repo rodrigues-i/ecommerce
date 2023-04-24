@@ -30,4 +30,31 @@ public class SellerService {
 		seller = sellerRepository.save(seller);
 		return seller.getSellerId();
 	}
+
+	public Seller updateSeller(Long sellerId, Seller seller) {
+		if (sellerId != seller.getSellerId())
+			return null;
+		Optional<Seller> optional = sellerRepository.findById(sellerId);
+		if (optional.isEmpty())
+			throw new ResourceNotFoundException("Seller not found for id " + sellerId);
+
+		Seller databaseSeller = optional.get();
+		if (!seller.getFirstName().trim().equals(databaseSeller.getFirstName()) &&
+				!seller.getFirstName().trim().equals(""))
+			databaseSeller.setFirstName(seller.getFirstName().trim());
+		
+		if (!seller.getFamilyName().trim().equals(databaseSeller.getFamilyName()) &&
+				!seller.getFamilyName().trim().equals(""))
+			databaseSeller.setFamilyName(seller.getFamilyName().trim());
+		
+		if (!seller.getEmail().trim().equals(databaseSeller.getEmail()) &&
+				!seller.getEmail().trim().equals(""))
+			databaseSeller.setEmail(seller.getEmail().trim());
+		
+		if (!seller.getPassword().trim().equals(databaseSeller.getPassword()) &&
+				!seller.getPassword().trim().equals(""))
+			databaseSeller.setPassword(seller.getPassword().trim());
+
+		return sellerRepository.save(databaseSeller);
+	}
 }
