@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,12 @@ public class SellerController {
 	public ResponseEntity<List<Seller>> getAllSellers() {
 		List<Seller> sellers = sellerService.getAllSellers();
 		return ResponseEntity.ok().body(sellers);
+	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<Seller> getSellerById(@PathVariable("id") Long sellerId) {
+		Seller seller = sellerService.getSellerById(sellerId);
+		return ResponseEntity.ok().body(seller);
 	}
 
 	@PostMapping
