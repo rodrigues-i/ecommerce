@@ -39,22 +39,28 @@ public class SellerService {
 			throw new ResourceNotFoundException("Seller not found for id " + sellerId);
 
 		Seller databaseSeller = optional.get();
-		if (!seller.getFirstName().trim().equals(databaseSeller.getFirstName()) &&
-				!seller.getFirstName().trim().equals(""))
+		if (!seller.getFirstName().trim().equals(databaseSeller.getFirstName())
+				&& !seller.getFirstName().trim().equals(""))
 			databaseSeller.setFirstName(seller.getFirstName().trim());
-		
-		if (!seller.getFamilyName().trim().equals(databaseSeller.getFamilyName()) &&
-				!seller.getFamilyName().trim().equals(""))
+
+		if (!seller.getFamilyName().trim().equals(databaseSeller.getFamilyName())
+				&& !seller.getFamilyName().trim().equals(""))
 			databaseSeller.setFamilyName(seller.getFamilyName().trim());
-		
-		if (!seller.getEmail().trim().equals(databaseSeller.getEmail()) &&
-				!seller.getEmail().trim().equals(""))
+
+		if (!seller.getEmail().trim().equals(databaseSeller.getEmail()) && !seller.getEmail().trim().equals(""))
 			databaseSeller.setEmail(seller.getEmail().trim());
-		
-		if (!seller.getPassword().trim().equals(databaseSeller.getPassword()) &&
-				!seller.getPassword().trim().equals(""))
+
+		if (!seller.getPassword().trim().equals(databaseSeller.getPassword())
+				&& !seller.getPassword().trim().equals(""))
 			databaseSeller.setPassword(seller.getPassword().trim());
 
 		return sellerRepository.save(databaseSeller);
+	}
+
+	public void deleteSeller(Long sellerId) {
+		Optional<Seller> optional = sellerRepository.findById(sellerId);
+		if (optional.isEmpty())
+			throw new ResourceNotFoundException("Seller not found for id " + sellerId);
+		sellerRepository.deleteById(sellerId);
 	}
 }
