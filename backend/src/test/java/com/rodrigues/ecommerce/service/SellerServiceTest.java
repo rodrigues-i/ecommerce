@@ -3,6 +3,7 @@ package com.rodrigues.ecommerce.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -119,5 +120,32 @@ public class SellerServiceTest {
 		
 		verify(sellerRepository).findById(sellerId);
 		verify(sellerRepository, never()).save(seller);
+	}
+	
+	@Test
+	public void deleteSellerShouldCallFindByIdANDDelete() {
+		given(sellerRepository.findById(sellerId)).willReturn(optional);
+		doNothing().when(sellerRepository).deleteById(sellerId);
+		
+		// when
+		underTest.deleteSeller(sellerId);
+		
+		// then
+		verify(sellerRepository).findById(sellerId);
+		verify(sellerRepository).deleteById(sellerId);
+		
+	}
+	
+	@Test
+	public void deleteSellerShouldThrowResourceNotFoundExceptionWhenSellerDoesNotExist() {
+		given(sellerRepository.findById(sellerId)).willReturn(Optional.empty());
+		
+		// when
+		// then
+		assertThatThrownBy(() -> underTest.deleteSeller(sellerId))
+			.isInstanceOf(ResourceNotFoundException.class)
+			.hasMessageContaining("Seller not found for id " + sellerId);
+		
+		verify(sellerRepository, never()).deleteById(sellerId);
 	}
 }
