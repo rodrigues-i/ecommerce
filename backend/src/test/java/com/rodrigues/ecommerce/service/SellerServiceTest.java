@@ -1,5 +1,6 @@
 package com.rodrigues.ecommerce.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -58,5 +59,17 @@ public class SellerServiceTest {
 		// then
 		assertThatThrownBy(() -> underTest.getSellerById(sellerId)).isInstanceOf(ResourceNotFoundException.class)
 				.hasMessageContaining("Seller not found for id " + sellerId);
+	}
+
+	@Test
+	public void createSellerShouldReturnId() {
+		given(sellerRepository.save(seller)).willReturn(seller);
+
+		// when
+		Long id = underTest.createSeller(seller);
+
+		// then
+		assertThat(id).isEqualTo(seller.getSellerId());
+		verify(sellerRepository).save(seller);
 	}
 }
