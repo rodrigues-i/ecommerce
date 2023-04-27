@@ -1,8 +1,11 @@
 package com.rodrigues.ecommerce.controlller;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -137,5 +140,19 @@ public class SellerControllerTest {
 		verify(sellerService, never()).getSellerById(differentId);
 	}
 	
+	@Test
+	public void deleteSellerShouldDeleteSeller() throws Exception {
+		doNothing().when(sellerService).deleteSeller(seller.getSellerId());;
+		
+		mockMvc.perform(delete("/sellers/{id}", seller.getSellerId()))
+		.andExpect(status().isNoContent());
+		
+	}
 	
+	@Test
+	public void deleteSellerShouldReturnStatusNotFound() throws Exception {
+		doThrow(ResourceNotFoundException.class).when(sellerService).deleteSeller(3L);
+		
+		mockMvc.perform(delete("/sellers/{id}", 3L)).andExpect(status().isNotFound());
+	}
 }
