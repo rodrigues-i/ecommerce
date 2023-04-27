@@ -3,6 +3,7 @@ package com.rodrigues.ecommerce.controlller;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,4 +83,23 @@ public class SellerControllerTest {
 		
 		verify(sellerService).getSellerById(3L);
 	}
+	
+	@Test
+	public void createSellerShouldReturnId() throws Exception {
+		// given
+		when(sellerService.createSeller(seller)).thenReturn(seller.getSellerId());
+		String jsonBody = objectMapper.writeValueAsString(seller);
+		
+		// when
+		mockMvc.perform(post("/sellers")
+				.content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isCreated())
+			.andExpect(content().string(String.valueOf(seller.getSellerId())));
+		
+		verify(sellerService).createSeller(seller);
+	}
+	
+	
 }
