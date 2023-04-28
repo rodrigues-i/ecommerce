@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Product {
 
+	private Long productId;
 	@NotBlank(message = "Name is required")
 	private String name;
 	@NotBlank(message = "Description is required")
