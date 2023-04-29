@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Novel {
 
-	private Long productId;
+	private Long novelId;
 	@NotBlank(message = "Name is required")
 	private String name;
 	@NotBlank(message = "Description is required")
