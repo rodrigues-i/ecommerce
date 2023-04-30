@@ -3,6 +3,7 @@ package com.rodrigues.ecommerce.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -116,5 +117,28 @@ public class NovelServiceTest {
 		assertThatThrownBy(() -> underTest.updateNovel(novelId, novel))
 			.isInstanceOf(ResourceNotFoundException.class)
 			.hasMessageContaining("Novel not found for id " + novelId);
+	}
+	
+	@Test
+	public void deleteNovelShouldRemoveNovel() {
+		given(novelRepository.findById(novelId)).willReturn(optional);
+		doNothing().when(novelRepository).deleteById(novelId);
+		
+		// when
+		underTest.removeNovel(novelId);
+		
+		verify(novelRepository).findById(novelId);
+		verify(novelRepository).deleteById(novelId);
+	}
+	
+	@Test
+	public void deleteNovelShouldThrowResourceNotFoundExceptionWhenNovelDoesNotExist() {
+		given(novelRepository.findById(novelId)).willReturn(Optional.empty());
+		
+		assertThatThrownBy(() -> underTest.removeNovel(novelId))
+			.isInstanceOf(ResourceNotFoundException.class)
+			.hasMessageContaining("Novel not found for id " + novelId);
+		
+		verify(novelRepository, never()).deleteById(novelId);
 	}
 }
