@@ -64,4 +64,16 @@ public class NovelServiceTest {
 			.hasMessageContaining("Novel not found for id " + novelId);
 		verify(novelRepository).findById(novelId);
 	}
+	
+	@Test
+	public void createNovelShouldReturnIdOfCreatedNovel() {
+		given(novelRepository.save(novel)).willReturn(novel);
+		
+		// when
+		var result = underTest.createNovel(novel);
+		
+		// then
+		assertThat(result).isEqualTo(novel.getNovelId());
+		verify(novelRepository).save(novel);
+	}
 }
