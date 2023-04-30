@@ -3,6 +3,7 @@ package com.rodrigues.ecommerce.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
@@ -75,5 +76,45 @@ public class NovelServiceTest {
 		// then
 		assertThat(result).isEqualTo(novel.getNovelId());
 		verify(novelRepository).save(novel);
+	}
+	
+	@Test
+	public void updateNovelShouldReturnUpdatedNovel() {
+		// given
+		String newName = "Sword art Online";
+		novel.setName(newName);
+		given(novelRepository.findById(novelId)).willReturn(optional);
+		given(novelRepository.save(novel)).willReturn(novel);
+		
+		// when
+		var result = underTest.updateNovel(novelId, novel);
+		
+		// then
+		assertThat(result.getName()).isEqualTo(newName);
+		verify(novelRepository).save(novel);
+	}
+	
+	@Test
+	public void updateNovelShouldReturnNullWhenIddifferentFromNovel() {
+		Long differentId = 3L;
+		
+		// when
+		var result = underTest.updateNovel(differentId, novel);
+		
+		// then
+		assertThat(result).isNull();
+		verify(novelRepository, never()).findById(differentId);
+		verify(novelRepository, never()).save(novel);
+	}
+	
+	@Test
+	public void updateNovelShouldThrowResourceNotFoundExceptionWhenNovelDoesNotExist() {
+		given(novelRepository.findById(novelId)).willReturn(Optional.empty());
+		
+		// when
+		// then
+		assertThatThrownBy(() -> underTest.updateNovel(novelId, novel))
+			.isInstanceOf(ResourceNotFoundException.class)
+			.hasMessageContaining("Novel not found for id " + novelId);
 	}
 }
