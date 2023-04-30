@@ -45,4 +45,12 @@ public class NovelService {
 
 		return novel;
 	}
+
+	public void removeNovel(Long novelId) {
+		Optional<Novel> optional = novelRepository.findById(novelId);
+		if (optional.isEmpty())
+			throw new ResourceNotFoundException("Novel not found for id " + novelId);
+
+		novelRepository.deleteById(novelId);
+	}
 }
