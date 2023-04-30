@@ -36,7 +36,7 @@ public class NovelService {
 
 		Optional<Novel> optional = novelRepository.findById(novelId);
 		if (optional.isEmpty())
-			throw new ResourceNotFoundException("Novel not found fot id " + novelId);
+			throw new ResourceNotFoundException("Novel not found for id " + novelId);
 
 		Novel databaseNovel = optional.get();
 		databaseNovel.setName(novel.getName().trim());
