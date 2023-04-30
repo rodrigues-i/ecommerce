@@ -29,4 +29,20 @@ public class NovelService {
 		novel = novelRepository.save(novel);
 		return novel.getNovelId();
 	}
+
+	public Novel updateNovel(Long novelId, Novel novel) {
+		if (novelId != novel.getNovelId())
+			return null;
+
+		Optional<Novel> optional = novelRepository.findById(novelId);
+		if (optional.isEmpty())
+			throw new ResourceNotFoundException("Novel not found fot id " + novelId);
+
+		Novel databaseNovel = optional.get();
+		databaseNovel.setName(novel.getName().trim());
+		databaseNovel.setDescription(novel.getDescription().trim());
+		novel = novelRepository.save(databaseNovel);
+
+		return novel;
+	}
 }
